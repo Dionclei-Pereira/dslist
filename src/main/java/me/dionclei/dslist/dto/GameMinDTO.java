@@ -1,7 +1,8 @@
-package me.dionclei.dslist.dto;
+ package me.dionclei.dslist.dto;
 
 import jakarta.persistence.Column;
 import me.dionclei.dslist.entities.Game;
+import me.dionclei.dslist.projections.GameMinProjection;
 
 public class GameMinDTO {
 	private Long id;
@@ -19,6 +20,14 @@ public class GameMinDTO {
 		this.year = year;
 		this.imgUrl = imgUrl;
 		this.shortDescription = shortDescription;
+	}
+	
+	public GameMinDTO(GameMinProjection entity) {
+		this.id = entity.getId();
+		this.title = entity.getTitle();
+		this.year = entity.getGameYear();
+		this.imgUrl = entity.getImgUrl();
+		this.shortDescription = entity.getShortDescription();
 	}
 	
 	public GameMinDTO(Game entity) {

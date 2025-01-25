@@ -23,6 +23,11 @@ public class GameService {
 	}
 	
 	@Transactional(readOnly = true)
+	public List<GameMinDTO> findByList(Long listId) {
+		return repository.searchByList(listId).stream().map(x -> new GameMinDTO(x)).collect(Collectors.toList());
+	}
+	
+	@Transactional(readOnly = true)
 	public GameDTO findById(Long id) {
 		var result = repository.findById(id);
 		if (result.isPresent()) {
