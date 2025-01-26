@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import me.dionclei.dslist.dto.GameDTO;
 import me.dionclei.dslist.dto.GameListDTO;
 import me.dionclei.dslist.dto.GameMinDTO;
+import me.dionclei.dslist.projections.GameMinProjection;
 import me.dionclei.dslist.repositories.GameListRepository;
 import me.dionclei.dslist.repositories.GameRepository;
 
@@ -19,9 +20,25 @@ public class GameListService {
 	@Autowired
 	private GameListRepository repository;
 	
+	@Autowired
+	private GameRepository gameRepository;
+	
 	@Transactional(readOnly = true)
 	public List<GameListDTO> findAll() {
 		return repository.findAll().stream().map(x -> new GameListDTO(x)).collect(Collectors.toList());
 	}
 	
+	@Transactional
+	public void move(Long listId, int sourceIndex, int destinationIndex) {
+		List<GameMinProjection> list = gameRepository.searchByList(listId);
+		GameMinProjection obj = list.remove(sourceIndex);
+		list.add(destinationIndex, obj);
+		
+		int min = sourceIndex < destinationIndex ? sourceIndex : destinationIndex;
+		int max = sourceIndex < destinationIndex ? destinationIndex : sourceIndex;
+		
+		for (int i = min; i <= max; i++) {
+			repository.updateBelongingPosition(listId, list.get(i).getId(), i);
+		}
+	}
 }
