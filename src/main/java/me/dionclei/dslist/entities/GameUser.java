@@ -10,6 +10,7 @@ import java.util.UUID;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,6 +30,8 @@ public class GameUser implements UserDetails {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID uuid;
 	
+	private String email;
+	
 	private String password;
 	
 	private UserRole role;
@@ -36,9 +39,10 @@ public class GameUser implements UserDetails {
 	public GameUser() {
 	}
 
-	public GameUser(String name, String password, UserRole role) {
+	public GameUser(String name, String email,String password, UserRole role) {
 		this.name = name;
-		this.password = password;
+		setPassword(password);
+		this.email = email;
 		this.role = role;
 	}
 
@@ -75,7 +79,23 @@ public class GameUser implements UserDetails {
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		this.password = new BCryptPasswordEncoder().encode(password);
+	}
+	
+	public UUID getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(UUID uuid) {
+		this.uuid = uuid;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	@Override

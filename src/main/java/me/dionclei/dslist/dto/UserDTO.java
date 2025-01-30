@@ -1,5 +1,5 @@
 package me.dionclei.dslist.dto;
 
-public record UserDTO(String name) {
+public record UserDTO(String name, String email) {
 	
 }

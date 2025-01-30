@@ -1,4 +1,4 @@
-package me.dionclei.dslist;
+package me.dionclei.dslist.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +21,8 @@ public class SecurityConfig {
     	return config.csrf(c -> c.disable())
     			.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
     			.authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, "/games").hasRole("ADMIN")
-    					.requestMatchers(HttpMethod.POST, "/auth").permitAll()
+    					.requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+    					.requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
     					.anyRequest().authenticated())
     			.build();
     }
