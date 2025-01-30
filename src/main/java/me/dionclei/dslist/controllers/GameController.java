@@ -22,7 +22,7 @@ public class GameController {
 	private GameService gameService;
 	
 	@GetMapping
-	public ResponseEntity<List<GameMinDTO>> findAll() {
+	public ResponseEntity<List<GameMinDTO>> findAllGames() {
 		return ResponseEntity.ok().body(gameService.findAll());
 	}
 	

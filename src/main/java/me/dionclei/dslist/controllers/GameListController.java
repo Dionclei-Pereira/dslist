@@ -18,7 +18,7 @@ import me.dionclei.dslist.services.GameListService;
 import me.dionclei.dslist.services.GameService;
 
 @RestController
-@RequestMapping("/games")
+@RequestMapping("/lists")
 public class GameListController {
 	
 	@Autowired
