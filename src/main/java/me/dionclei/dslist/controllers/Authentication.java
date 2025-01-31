@@ -11,26 +11,32 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import me.dionclei.dslist.dto.LoginRequest;
+import me.dionclei.dslist.dto.LoginResponse;
 import me.dionclei.dslist.dto.RegisterRequest;
 import me.dionclei.dslist.entities.GameUser;
 import me.dionclei.dslist.entities.enums.UserRole;
 import me.dionclei.dslist.repositories.UserRepository;
+import me.dionclei.dslist.services.TokenService;
 
 @RestController
 @RequestMapping("/auth")
 public class Authentication {
 	
 	@Autowired
-	UserRepository repository;
+	private UserRepository repository;
+	
+	@Autowired
+	private TokenService service;
 	
 	@Autowired
 	private AuthenticationManager manager;
 	
 	@PostMapping("/login")
-	public ResponseEntity<Void> login(@RequestBody LoginRequest request) {
+	public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
 		var usernamepassword = new UsernamePasswordAuthenticationToken(request.email(), request.password());
 		var auth = manager.authenticate(usernamepassword);
-		return ResponseEntity.ok().build();
+		var token = service.generateToken((GameUser) auth.getPrincipal());
+		return ResponseEntity.ok().body(new LoginResponse(token));
 	}
 	
 	@PostMapping("/register")
