@@ -17,11 +17,13 @@ import me.dionclei.dslist.repositories.GameRepository;
 @Service
 public class GameListService {
 	
-	@Autowired
 	private GameListRepository repository;
-	
-	@Autowired
 	private GameRepository gameRepository;
+	
+	public GameListService(GameListRepository repository, GameRepository gameRepository) {
+		this.repository = repository;
+		this.gameRepository = gameRepository;
+	}
 	
 	@Transactional(readOnly = true)
 	public List<GameListDTO> findAll() {

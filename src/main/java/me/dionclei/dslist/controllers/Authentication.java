@@ -1,6 +1,5 @@
 package me.dionclei.dslist.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,14 +21,15 @@ import me.dionclei.dslist.services.TokenService;
 @RequestMapping("/auth")
 public class Authentication {
 	
-	@Autowired
 	private UserRepository repository;
-	
-	@Autowired
 	private TokenService service;
-	
-	@Autowired
 	private AuthenticationManager manager;
+	
+	public Authentication(UserRepository repository, TokenService service, AuthenticationManager manager) {
+		this.repository = repository;
+		this.service = service;
+		this.manager = manager;
+	}
 	
 	@PostMapping("/login")
 	public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {

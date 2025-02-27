@@ -14,8 +14,11 @@ import me.dionclei.dslist.repositories.GameRepository;
 @Service
 public class GameService {
 	
-	@Autowired
 	private GameRepository repository;
+	
+	public GameService(GameRepository repository) {
+		this.repository = repository;
+	}
 	
 	@Transactional(readOnly = true)
 	public List<GameMinDTO> findAll() {
