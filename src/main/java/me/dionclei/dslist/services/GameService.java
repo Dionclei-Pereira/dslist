@@ -39,6 +39,19 @@ public class GameService {
 		return list.stream().map(x -> new GameMinDTO(x)).collect(Collectors.toList());
 	}
 	
+	@Transactional(readOnly = true)
+	public int countByList(Long listId) {
+		return repository.countByList(listId);
+	}
+	
+	@Transactional(readOnly = true)
+	public List<GameMinDTO> findByList(Long listId, Integer skip) {
+		List<GameMinProjection> result = repository.searchByList(listId, skip);
+		if (result.isEmpty()) throw new ResourceNotFoundException("List not found");
+		List<GameMinProjection> list = result;
+		return list.stream().map(x -> new GameMinDTO(x)).collect(Collectors.toList());
+	}
+	
 	@Transactional
 	public GameDTO save(Game game) {
 		return new GameDTO(repository.save(game));
@@ -67,5 +80,14 @@ public class GameService {
         }
         repository.deleteById(id);
     }
+    
+    @Transactional(readOnly = true)
+	public int countGames() {
+		return repository.countGames();
+	}
+
+	public List<GameMinDTO> findAll(Integer page) {
+		return repository.findAllPaged(page).stream().map(game -> new GameMinDTO(game)).toList();
+	}
 	
 }

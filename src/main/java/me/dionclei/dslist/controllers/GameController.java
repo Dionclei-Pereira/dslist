@@ -12,12 +12,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import me.dionclei.dslist.dto.GameDTO;
 import me.dionclei.dslist.dto.GameMinDTO;
+import me.dionclei.dslist.dto.PagedResult;
 import me.dionclei.dslist.dto.RequestCreateGame;
 import me.dionclei.dslist.entities.Game;
+import me.dionclei.dslist.exceptions.PageException;
 import me.dionclei.dslist.services.GameService;
 
 @RestController
@@ -28,8 +31,17 @@ public class GameController {
 	private GameService gameService;
 	
 	@GetMapping
-	public ResponseEntity<List<GameMinDTO>> findAllGames() {
-		return ResponseEntity.ok().body(gameService.findAll());
+	public ResponseEntity<PagedResult> findAllGames(@RequestParam(defaultValue = "1") Integer page) {
+	    final int pageSize = 10;
+	    int totalGames = gameService.countGames();
+	    int totalPages = (int) Math.ceil((double) totalGames / pageSize);
+	    if (page < 1 || page > totalPages) {
+	        throw new PageException("Page not found");
+	    }
+	    
+	    List<GameMinDTO> games = gameService.findAll((page - 1) * pageSize);
+	    PagedResult paged = new PagedResult(page, totalPages, games);
+	    return ResponseEntity.ok().body(paged);
 	}
 	
 	@GetMapping("/{id}")

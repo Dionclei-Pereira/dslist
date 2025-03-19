@@ -36,7 +36,9 @@ public class SecurityConfig {
     					.requestMatchers(HttpMethod.POST, "lists").hasRole("ADMIN")
     					.requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
     					.requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-    					.anyRequest().authenticated())
+    					.requestMatchers("/h2-console/**").permitAll()
+    					.anyRequest().permitAll())
+    			.headers(headers -> headers.frameOptions().sameOrigin())
     			.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
     			.build();
     }

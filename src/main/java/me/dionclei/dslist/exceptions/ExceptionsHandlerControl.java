@@ -31,4 +31,12 @@ public class ExceptionsHandlerControl {
 		return ResponseEntity.status(status).body(err);
 	}
 	
+	@ExceptionHandler(PageException.class)
+	public ResponseEntity<StandardError> pageException(PageException e, HttpServletRequest request) {
+		String error = "Paged result error";
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
+		return ResponseEntity.status(status).body(err);
+	}
+	
 }

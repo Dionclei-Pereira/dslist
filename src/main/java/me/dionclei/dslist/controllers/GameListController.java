@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,13 +13,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import me.dionclei.dslist.dto.GameListDTO;
 import me.dionclei.dslist.dto.GameMinDTO;
+import me.dionclei.dslist.dto.PagedResult;
 import me.dionclei.dslist.dto.ReplacementDTO;
 import me.dionclei.dslist.dto.RequestCreateGameList;
 import me.dionclei.dslist.entities.GameList;
+import me.dionclei.dslist.exceptions.PageException;
+import me.dionclei.dslist.projections.GameMinProjection;
 import me.dionclei.dslist.services.GameListService;
 import me.dionclei.dslist.services.GameService;
 
@@ -38,8 +44,18 @@ public class GameListController {
 	}
 	
 	@GetMapping("/{listId}/games")
-	public ResponseEntity<List<GameMinDTO>> findByList(@PathVariable Long listId) {
-		return ResponseEntity.ok().body(gameService.findByList(listId));
+	public ResponseEntity<PagedResult> findByList(@PathVariable Long listId, @RequestParam(defaultValue = "1") Integer page) {
+	    final int pageSize = 10;
+	    int totalGames = gameService.countByList(listId);
+	    int totalPages = (int) Math.ceil((double) totalGames / pageSize);
+	    
+	    if (page < 1 || page > totalPages) {
+	        throw new PageException("Page not found");
+	    }
+	    
+	    List<GameMinDTO> games = gameService.findByList(listId, (page - 1) * pageSize);
+	    PagedResult paged = new PagedResult(page, totalPages, games);
+	    return ResponseEntity.ok().body(paged);
 	}
 	
 	@PostMapping("/{listId}/replacement")
