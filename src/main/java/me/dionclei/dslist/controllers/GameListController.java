@@ -49,6 +49,11 @@ public class GameListController {
 		return ResponseEntity.ok().build();
 	}
 	
+	@PostMapping("/{listId}/games/add-game/{gameId}")
+	public ResponseEntity<GameMinDTO> addGame(@PathVariable Long listId, @PathVariable Long gameId) {
+		return ResponseEntity.ok().body(gameListService.addGame(listId, gameId));
+	}
+	
 	@PostMapping
 	public ResponseEntity<GameListDTO> save(@RequestBody RequestCreateGameList gameRequest) {
 		GameList gameList= new GameList();

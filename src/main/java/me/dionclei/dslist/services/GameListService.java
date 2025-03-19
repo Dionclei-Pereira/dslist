@@ -10,20 +10,25 @@ import org.springframework.transaction.annotation.Transactional;
 import me.dionclei.dslist.dto.GameDTO;
 import me.dionclei.dslist.dto.GameListDTO;
 import me.dionclei.dslist.dto.GameMinDTO;
+import me.dionclei.dslist.entities.Belonging;
 import me.dionclei.dslist.entities.GameList;
 import me.dionclei.dslist.projections.GameMinProjection;
+import me.dionclei.dslist.repositories.BelongingRepository;
 import me.dionclei.dslist.repositories.GameListRepository;
 import me.dionclei.dslist.repositories.GameRepository;
+import me.dionclei.dslist.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class GameListService {
 	
 	private GameListRepository repository;
 	private GameRepository gameRepository;
+	private BelongingRepository belongingRepository;
 	
-	public GameListService(GameListRepository repository, GameRepository gameRepository) {
+	public GameListService(GameListRepository repository, GameRepository gameRepository, BelongingRepository belongingRepository) {
 		this.repository = repository;
 		this.gameRepository = gameRepository;
+		this.belongingRepository = belongingRepository;
 	}
 	
 	@Transactional(readOnly = true)
@@ -34,6 +39,23 @@ public class GameListService {
 	@Transactional
 	public GameListDTO save(GameList gameList) {
 		return new GameListDTO(repository.save(gameList));
+	}
+	
+	@Transactional
+	public GameMinDTO addGame(Long listId, Long gameId) {
+		var game = gameRepository.findById(gameId);
+		var list = repository.findById(listId);
+		var index = countList(listId);
+		if(!game.isPresent()) throw new ResourceNotFoundException("Game not found");
+		if(!list.isPresent()) throw new ResourceNotFoundException("List not found");
+		Belonging belonging = new Belonging(game.get(), list.get(), index);
+		belongingRepository.save(belonging);
+		return new GameMinDTO(game.get());
+	}
+	
+	@Transactional(readOnly = true)
+	private Integer countList(Long listId) {
+		return (Integer) gameRepository.searchByList(listId).size();
 	}
 	
 	@Transactional
