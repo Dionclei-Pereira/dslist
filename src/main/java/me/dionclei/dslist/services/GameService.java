@@ -9,7 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 import me.dionclei.dslist.dto.GameDTO;
 import me.dionclei.dslist.dto.GameMinDTO;
 import me.dionclei.dslist.entities.Game;
+import me.dionclei.dslist.projections.GameMinProjection;
 import me.dionclei.dslist.repositories.GameRepository;
+import me.dionclei.dslist.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class GameService {
@@ -27,7 +29,10 @@ public class GameService {
 	
 	@Transactional(readOnly = true)
 	public List<GameMinDTO> findByList(Long listId) {
-		return repository.searchByList(listId).stream().map(x -> new GameMinDTO(x)).collect(Collectors.toList());
+		List<GameMinProjection> result = repository.searchByList(listId);
+		if (result.isEmpty()) throw new ResourceNotFoundException("List not found");
+		List<GameMinProjection> list = result;
+		return list.stream().map(x -> new GameMinDTO(x)).collect(Collectors.toList());
 	}
 	
 	@Transactional
@@ -41,7 +46,7 @@ public class GameService {
 		if (result.isPresent()) {
 			return new GameDTO(result.get());
 		}
-		return null;
+		throw new ResourceNotFoundException("Game not found");
 	}
 	
 }

@@ -55,12 +55,17 @@ public class GameListService {
 	
 	@Transactional(readOnly = true)
 	private Integer countList(Long listId) {
-		return (Integer) gameRepository.searchByList(listId).size();
+		var result = gameRepository.searchByList(listId);
+		if (result.isEmpty()) throw new ResourceNotFoundException("List not found");
+		List<GameMinProjection> list = result;
+		return list.size();
 	}
 	
 	@Transactional
 	public void move(Long listId, int sourceIndex, int destinationIndex) {
-		List<GameMinProjection> list = gameRepository.searchByList(listId);
+		var result = gameRepository.searchByList(listId);
+		if (result.isEmpty()) throw new ResourceNotFoundException("List not found");
+		List<GameMinProjection> list = result;
 		GameMinProjection obj = list.remove(sourceIndex);
 		list.add(destinationIndex, obj);
 		
