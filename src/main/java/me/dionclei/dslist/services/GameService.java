@@ -3,14 +3,18 @@ package me.dionclei.dslist.services;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.BeanUtils;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import me.dionclei.dslist.dto.GameDTO;
 import me.dionclei.dslist.dto.GameMinDTO;
+import me.dionclei.dslist.dto.RequestCreateGame;
 import me.dionclei.dslist.entities.Game;
 import me.dionclei.dslist.projections.GameMinProjection;
 import me.dionclei.dslist.repositories.GameRepository;
+import me.dionclei.dslist.services.exceptions.DatabaseException;
 import me.dionclei.dslist.services.exceptions.ResourceNotFoundException;
 
 @Service
@@ -42,11 +46,26 @@ public class GameService {
 	
 	@Transactional(readOnly = true)
 	public GameDTO findById(Long id) {
-		var result = repository.findById(id);
-		if (result.isPresent()) {
-			return new GameDTO(result.get());
-		}
-		throw new ResourceNotFoundException("Game not found");
+		var result = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Game not found"));
+		return new GameDTO(result);
 	}
+	
+	@Transactional
+    public GameDTO update(Long id, RequestCreateGame gameRequest) {
+        Game game = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Game not found"));
+
+        BeanUtils.copyProperties(gameRequest, game, "id");
+        game = repository.save(game);
+        return new GameDTO(game);
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        if (!repository.existsById(id)) {
+            throw new ResourceNotFoundException("Game not found");
+        }
+        repository.deleteById(id);
+    }
 	
 }
