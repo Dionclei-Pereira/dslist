@@ -48,8 +48,8 @@ public class GameUser implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		if (role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ADMIN"), new SimpleGrantedAuthority("USER"));
-		return List.of(new SimpleGrantedAuthority("USER"));
+		if (role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+		return List.of(new SimpleGrantedAuthority("ROLE_USER"));
 	}
 
 	@Override

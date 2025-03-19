@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import me.dionclei.dslist.dto.GameDTO;
 import me.dionclei.dslist.dto.GameListDTO;
 import me.dionclei.dslist.dto.GameMinDTO;
+import me.dionclei.dslist.entities.GameList;
 import me.dionclei.dslist.projections.GameMinProjection;
 import me.dionclei.dslist.repositories.GameListRepository;
 import me.dionclei.dslist.repositories.GameRepository;
@@ -28,6 +29,11 @@ public class GameListService {
 	@Transactional(readOnly = true)
 	public List<GameListDTO> findAll() {
 		return repository.findAll().stream().map(x -> new GameListDTO(x)).collect(Collectors.toList());
+	}
+	
+	@Transactional
+	public GameListDTO save(GameList gameList) {
+		return new GameListDTO(repository.save(gameList));
 	}
 	
 	@Transactional

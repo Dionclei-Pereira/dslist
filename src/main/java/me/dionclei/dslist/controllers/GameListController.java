@@ -2,6 +2,7 @@ package me.dionclei.dslist.controllers;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,9 +12,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import me.dionclei.dslist.dto.GameDTO;
 import me.dionclei.dslist.dto.GameListDTO;
 import me.dionclei.dslist.dto.GameMinDTO;
 import me.dionclei.dslist.dto.ReplacementDTO;
+import me.dionclei.dslist.dto.RequestCreateGame;
+import me.dionclei.dslist.dto.RequestCreateGameList;
+import me.dionclei.dslist.entities.Game;
+import me.dionclei.dslist.entities.GameList;
 import me.dionclei.dslist.services.GameListService;
 import me.dionclei.dslist.services.GameService;
 
@@ -43,4 +49,10 @@ public class GameListController {
 		return ResponseEntity.ok().build();
 	}
 	
+	@PostMapping
+	public ResponseEntity<GameListDTO> save(@RequestBody RequestCreateGameList gameRequest) {
+		GameList gameList= new GameList();
+		BeanUtils.copyProperties(gameRequest, gameList);
+		return ResponseEntity.ok().body(gameListService.save(gameList));
+	}
 }

@@ -98,7 +98,7 @@ public class Game {
 		return imgUrl;
 	}
 
-	public void setImaUrl(String imgUrl) {
+	public void setImgUrl(String imgUrl) {
 		this.imgUrl = imgUrl;
 	}
 

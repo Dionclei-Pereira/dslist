@@ -15,6 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import me.dionclei.dslist.entities.enums.UserRole;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -27,6 +29,7 @@ public class SecurityConfig {
     	return config.csrf(c -> c.disable())
     			.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
     			.authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, "/games").hasRole("ADMIN")
+    					.requestMatchers(HttpMethod.POST, "lists").hasRole("ADMIN")
     					.requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
     					.requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
     					.anyRequest().authenticated())
