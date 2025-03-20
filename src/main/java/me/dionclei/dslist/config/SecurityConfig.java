@@ -33,12 +33,10 @@ public class SecurityConfig {
     					.requestMatchers(HttpMethod.DELETE, "/lists").hasRole("ADMIN")
     					.requestMatchers(HttpMethod.PUT, "/games").hasRole("ADMIN")
     					.requestMatchers(HttpMethod.DELETE, "/lists").hasRole("ADMIN")
-    					.requestMatchers(HttpMethod.POST, "lists").hasRole("ADMIN")
+    					.requestMatchers(HttpMethod.POST, "/lists").hasRole("ADMIN")
     					.requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
     					.requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-    					.requestMatchers("/h2-console/**").permitAll()
-    					.anyRequest().permitAll())
-    			.headers(headers -> headers.frameOptions().sameOrigin())
+    					.anyRequest().authenticated())
     			.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
     			.build();
     }

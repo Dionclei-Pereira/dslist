@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import me.dionclei.dslist.dto.GameDTO;
 import me.dionclei.dslist.dto.GameMinDTO;
 import me.dionclei.dslist.dto.PagedResult;
 import me.dionclei.dslist.dto.RequestCreateGame;
+import me.dionclei.dslist.dto.RequestUpdateGame;
 import me.dionclei.dslist.entities.Game;
 import me.dionclei.dslist.exceptions.PageException;
 import me.dionclei.dslist.services.GameService;
@@ -50,14 +52,14 @@ public class GameController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<GameDTO> save(@RequestBody RequestCreateGame gameRequest) {
+	public ResponseEntity<GameDTO> save(@RequestBody @Valid RequestCreateGame gameRequest) {
 		Game game = new Game();
 		BeanUtils.copyProperties(gameRequest, game);
 		return ResponseEntity.ok().body(gameService.save(game));
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<GameDTO> update(@PathVariable Long id, @RequestBody RequestCreateGame gameRequest) {
+	public ResponseEntity<GameDTO> update(@PathVariable Long id, @RequestBody @Valid RequestUpdateGame gameRequest) {
 	    GameDTO updatedGame = gameService.update(id, gameRequest);
 	    return ResponseEntity.ok().body(updatedGame);
 	}

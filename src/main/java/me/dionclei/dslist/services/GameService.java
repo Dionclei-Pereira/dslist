@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import me.dionclei.dslist.dto.GameDTO;
 import me.dionclei.dslist.dto.GameMinDTO;
 import me.dionclei.dslist.dto.RequestCreateGame;
+import me.dionclei.dslist.dto.RequestUpdateGame;
 import me.dionclei.dslist.entities.Game;
 import me.dionclei.dslist.projections.GameMinProjection;
 import me.dionclei.dslist.repositories.GameRepository;
@@ -64,11 +65,10 @@ public class GameService {
 	}
 	
 	@Transactional
-    public GameDTO update(Long id, RequestCreateGame gameRequest) {
+    public GameDTO update(Long id, RequestUpdateGame gameRequest) {
         Game game = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Game not found"));
-
-        BeanUtils.copyProperties(gameRequest, game, "id");
+        BeanUtils.copyProperties(fillNulls(gameRequest, game), game, "id");
         game = repository.save(game);
         return new GameDTO(game);
     }
@@ -88,6 +88,19 @@ public class GameService {
 
 	public List<GameMinDTO> findAll(Integer page) {
 		return repository.findAllPaged(page).stream().map(game -> new GameMinDTO(game)).toList();
+	}
+	
+	private RequestUpdateGame fillNulls(RequestUpdateGame request, Game game) {
+	    return new RequestUpdateGame(
+	            request.title() != null ? request.title() : game.getTitle(),
+	            request.year() != null ? request.year() : game.getYear(),
+	            request.genre() != null ? request.genre() : game.getGenre(),
+	            request.platforms() != null ? request.platforms() : game.getPlatforms(),
+	            request.score() != null ? request.score() : game.getScore(),
+	            request.imgUrl() != null ? request.imgUrl() : game.getImgUrl(),
+	            request.shortDescription() != null ? request.shortDescription() : game.getShortDescription(),
+	            request.longDescription() != null ? request.longDescription() : game.getLongDescription()
+	    );
 	}
 	
 }

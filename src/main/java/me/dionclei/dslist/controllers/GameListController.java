@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import jakarta.validation.Valid;
 import me.dionclei.dslist.dto.GameListDTO;
 import me.dionclei.dslist.dto.GameMinDTO;
 import me.dionclei.dslist.dto.PagedResult;
@@ -70,14 +71,14 @@ public class GameListController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<GameListDTO> save(@RequestBody RequestCreateGameList gameRequest) {
+	public ResponseEntity<GameListDTO> save(@RequestBody @Valid RequestCreateGameList gameRequest) {
 		GameList gameList= new GameList();
 		BeanUtils.copyProperties(gameRequest, gameList);
 		return ResponseEntity.ok().body(gameListService.save(gameList));
 	}
 	
 	@PutMapping("/{listId}")
-	public ResponseEntity<GameListDTO> updateList(@PathVariable Long listId, @RequestBody RequestCreateGameList gameListRequest) {
+	public ResponseEntity<GameListDTO> updateList(@PathVariable Long listId, @RequestBody @Valid RequestCreateGameList gameListRequest) {
 	    GameListDTO updatedList = gameListService.update(listId, gameListRequest);
 	    return ResponseEntity.ok().body(updatedList);
 	}
