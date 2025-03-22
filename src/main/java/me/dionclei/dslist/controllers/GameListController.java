@@ -28,6 +28,7 @@ import me.dionclei.dslist.exceptions.PageException;
 import me.dionclei.dslist.projections.GameMinProjection;
 import me.dionclei.dslist.services.GameListService;
 import me.dionclei.dslist.services.GameService;
+import me.dionclei.dslist.services.exceptions.GameIndexOutOfBoundsException;
 
 @RestController
 @RequestMapping("/lists")
@@ -63,6 +64,7 @@ public class GameListController {
 	public ResponseEntity<Void> move(@PathVariable Long listId, @RequestBody ReplacementDTO body) {
 		gameListService.move(listId, body.sourceIndex(), body.destinationIndex());
 		return ResponseEntity.ok().build();
+
 	}
 	
 	@PostMapping("/{listId}/games/add-game/{gameId}")

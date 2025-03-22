@@ -32,7 +32,7 @@ public class SecurityConfig {
     					.requestMatchers(HttpMethod.DELETE, "/games").hasRole("ADMIN")
     					.requestMatchers(HttpMethod.DELETE, "/lists").hasRole("ADMIN")
     					.requestMatchers(HttpMethod.PUT, "/games").hasRole("ADMIN")
-    					.requestMatchers(HttpMethod.DELETE, "/lists").hasRole("ADMIN")
+    					.requestMatchers(HttpMethod.PUT, "/lists").hasRole("ADMIN")
     					.requestMatchers(HttpMethod.POST, "/lists").hasRole("ADMIN")
     					.requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
     					.requestMatchers(HttpMethod.POST, "/auth/register").permitAll()

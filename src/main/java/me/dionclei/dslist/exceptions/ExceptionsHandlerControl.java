@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import jakarta.servlet.http.HttpServletRequest;
+import me.dionclei.dslist.services.exceptions.GameIndexOutOfBoundsException;
 import me.dionclei.dslist.services.exceptions.ResourceNotFoundException;
 
 @ControllerAdvice
@@ -51,6 +52,14 @@ public class ExceptionsHandlerControl {
 			list.add(ex.getDefaultMessage());
 		});
 		StandardError err = new StandardError(Instant.now(), status.value(), error, list.toString(), request.getRequestURI());
+		return ResponseEntity.status(status).body(err);
+	}
+	
+	@ExceptionHandler(GameIndexOutOfBoundsException.class)
+	public ResponseEntity<StandardError> moveGameException(GameIndexOutOfBoundsException e, HttpServletRequest request) {
+		String error = "Moving game error";
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
 		return ResponseEntity.status(status).body(err);
 	}
 	

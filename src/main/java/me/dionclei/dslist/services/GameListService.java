@@ -18,6 +18,7 @@ import me.dionclei.dslist.repositories.BelongingRepository;
 import me.dionclei.dslist.repositories.GameListRepository;
 import me.dionclei.dslist.repositories.GameRepository;
 import me.dionclei.dslist.services.exceptions.DatabaseException;
+import me.dionclei.dslist.services.exceptions.GameIndexOutOfBoundsException;
 import me.dionclei.dslist.services.exceptions.ResourceNotFoundException;
 
 @Service
@@ -65,17 +66,21 @@ public class GameListService {
 	
 	@Transactional
 	public void move(Long listId, int sourceIndex, int destinationIndex) {
-		var result = gameRepository.searchByList(listId);
-		if (result.isEmpty()) throw new ResourceNotFoundException("List not found");
-		List<GameMinProjection> list = result;
-		GameMinProjection obj = list.remove(sourceIndex);
-		list.add(destinationIndex, obj);
-		
-		int min = sourceIndex < destinationIndex ? sourceIndex : destinationIndex;
-		int max = sourceIndex < destinationIndex ? destinationIndex : sourceIndex;
-		
-		for (int i = min; i <= max; i++) {
-			repository.updateBelongingPosition(listId, list.get(i).getId(), i);
+
+		try {
+			var result = gameRepository.searchByList(listId);
+			if (result.isEmpty()) throw new ResourceNotFoundException("List not found");
+			List<GameMinProjection> list = result;
+			GameMinProjection obj = list.remove(sourceIndex);
+			list.add(destinationIndex, obj);
+			
+			int min = sourceIndex < destinationIndex ? sourceIndex : destinationIndex;
+			int max = sourceIndex < destinationIndex ? destinationIndex : sourceIndex;
+			for (int i = min; i <= max; i++) {
+				repository.updateBelongingPosition(listId, list.get(i).getId(), i);
+			}
+		} catch (IndexOutOfBoundsException e) {
+			throw new GameIndexOutOfBoundsException(e.getMessage());
 		}
 	}
 	
