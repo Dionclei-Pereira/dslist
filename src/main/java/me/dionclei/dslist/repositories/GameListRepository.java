@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import me.dionclei.dslist.entities.Game;
 import me.dionclei.dslist.entities.GameList;
 
 @Repository

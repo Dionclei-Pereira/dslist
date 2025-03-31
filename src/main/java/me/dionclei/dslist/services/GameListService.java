@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +16,6 @@ import me.dionclei.dslist.projections.GameMinProjection;
 import me.dionclei.dslist.repositories.BelongingRepository;
 import me.dionclei.dslist.repositories.GameListRepository;
 import me.dionclei.dslist.repositories.GameRepository;
-import me.dionclei.dslist.services.exceptions.DatabaseException;
 import me.dionclei.dslist.services.exceptions.GameIndexOutOfBoundsException;
 import me.dionclei.dslist.services.exceptions.ResourceNotFoundException;
 

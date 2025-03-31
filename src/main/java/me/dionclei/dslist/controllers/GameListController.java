@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
-
 import jakarta.validation.Valid;
 import me.dionclei.dslist.dto.GameListDTO;
 import me.dionclei.dslist.dto.GameMinDTO;
@@ -25,10 +22,8 @@ import me.dionclei.dslist.dto.ReplacementDTO;
 import me.dionclei.dslist.dto.RequestCreateGameList;
 import me.dionclei.dslist.entities.GameList;
 import me.dionclei.dslist.exceptions.PageException;
-import me.dionclei.dslist.projections.GameMinProjection;
 import me.dionclei.dslist.services.GameListService;
 import me.dionclei.dslist.services.GameService;
-import me.dionclei.dslist.services.exceptions.GameIndexOutOfBoundsException;
 
 @RestController
 @RequestMapping("/lists")
@@ -46,7 +41,7 @@ public class GameListController {
 	}
 	
 	@GetMapping("/{listId}/games")
-	public ResponseEntity<PagedResult> findByList(@PathVariable Long listId, @RequestParam(defaultValue = "1") Integer page) {
+	public ResponseEntity<PagedResult<GameMinDTO>> findByList(@PathVariable Long listId, @RequestParam(defaultValue = "1") Integer page) {
 	    final int pageSize = 10;
 	    int totalGames = gameService.countByList(listId);
 	    int totalPages = (int) Math.ceil((double) totalGames / pageSize);
@@ -56,7 +51,7 @@ public class GameListController {
 	    }
 	    
 	    List<GameMinDTO> games = gameService.findByList(listId, (page - 1) * pageSize);
-	    PagedResult paged = new PagedResult(page, totalPages, games);
+	    PagedResult<GameMinDTO> paged = new PagedResult<GameMinDTO>(page, totalPages, games);
 	    return ResponseEntity.ok().body(paged);
 	}
 	

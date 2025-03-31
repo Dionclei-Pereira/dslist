@@ -33,7 +33,7 @@ public class GameController {
 	private GameService gameService;
 	
 	@GetMapping
-	public ResponseEntity<PagedResult> findAllGames(@RequestParam(defaultValue = "1") Integer page) {
+	public ResponseEntity<PagedResult<GameMinDTO>> findAllGames(@RequestParam(defaultValue = "1") Integer page) {
 	    final int pageSize = 10;
 	    int totalGames = gameService.countGames();
 	    int totalPages = (int) Math.ceil((double) totalGames / pageSize);
@@ -42,7 +42,7 @@ public class GameController {
 	    }
 	    
 	    List<GameMinDTO> games = gameService.findAll((page - 1) * pageSize);
-	    PagedResult paged = new PagedResult(page, totalPages, games);
+	    PagedResult<GameMinDTO> paged = new PagedResult<GameMinDTO>(page, totalPages, games);
 	    return ResponseEntity.ok().body(paged);
 	}
 	

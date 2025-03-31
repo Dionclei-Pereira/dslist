@@ -7,7 +7,7 @@
 
 ## 📖 Description
 
-This project implements a simple backend. The main objective is create an API that manages a list of games to a review website or games info.
+This project implements a simple backend. The main objective is to create an API that manages a list of games to a review website or games info.
 
 ## 🚀 **Technologies**
 
@@ -34,7 +34,7 @@ Install these programs:
 - **Java 21**
 - **IDE** (IntelliJ IDEA, Eclipse, VSCode.)
 - **Maven**
-- **Postman** (or similiar.)
+- **Postman** (or similar.)
 
 ## ⚡ Steps to Run the Project
 
@@ -49,7 +49,7 @@ cd dslist
 
 ### 2. Run the Project
 
-To run the project, you can use the your IDE or Maven CLI:
+To run the project, you can use your IDE or Maven CLI:
 
 ### 4. Testing the API
 

@@ -1,10 +1,8 @@
 package me.dionclei.dslist.entities;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -24,6 +22,8 @@ import me.dionclei.dslist.entities.enums.UserRole;
 @Table(name = "tb_users")
 public class GameUser implements UserDetails {
 	
+	private static final long serialVersionUID = 1L;
+
 	private String name;
 	
 	@Id

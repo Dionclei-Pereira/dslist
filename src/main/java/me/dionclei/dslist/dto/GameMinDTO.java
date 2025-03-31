@@ -1,6 +1,5 @@
  package me.dionclei.dslist.dto;
 
-import jakarta.persistence.Column;
 import me.dionclei.dslist.entities.Game;
 import me.dionclei.dslist.projections.GameMinProjection;
 
