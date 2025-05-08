@@ -19,6 +19,7 @@ The main technologies used in this project are:
 - ✅ H2 DataBase
 - ✅ Spring Security
 - ✅ JWT - HMAC
+- ✅ Cache - Caffeine
 
 ## 🎯 **Features**
 - ✅ Games  
