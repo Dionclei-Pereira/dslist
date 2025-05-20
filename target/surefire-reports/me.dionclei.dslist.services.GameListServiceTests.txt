@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: me.dionclei.dslist.services.GameListServiceTests
+-------------------------------------------------------------------------------
+Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.583 s -- in me.dionclei.dslist.services.GameListServiceTests
