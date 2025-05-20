@@ -29,7 +29,7 @@ public interface GameRepository extends JpaRepository<Game, Long> {
             INNER JOIN tb_belonging ON tb_game.id = tb_belonging.game_id
             WHERE tb_belonging.list_id = :listId
         """)
-        int countByList(@Param("listId") Long listId);
+    int countByList(@Param("listId") Long listId);
     
     @Query(nativeQuery = true, value = """
     		SELECT *
@@ -43,7 +43,7 @@ public interface GameRepository extends JpaRepository<Game, Long> {
             SELECT COUNT(*)
             FROM tb_game
         """)
-        int countGames();
+    int countGames();
 
 	
 	@Query(nativeQuery = true, value = """
