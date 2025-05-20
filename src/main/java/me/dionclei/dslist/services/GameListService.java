@@ -51,8 +51,10 @@ public class GameListService {
         var game = gameRepository.findById(gameId);
         var list = repository.findById(listId);
         var index = countList(listId);
+        
         if(!game.isPresent()) throw new ResourceNotFoundException("Game not found");
         if(!list.isPresent()) throw new ResourceNotFoundException("List not found");
+        
         Belonging belonging = new Belonging(game.get(), list.get(), index);
         belongingRepository.save(belonging);
         return new GameMinDTO(game.get());

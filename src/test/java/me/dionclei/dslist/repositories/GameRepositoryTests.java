@@ -22,7 +22,7 @@ public class GameRepositoryTests {
 	
 	@Test
 	@DisplayName("Should not be empty")
-	void searchByListCase1() {
+	void searchByList() {
 		List<GameMinProjection> games = gameRepository.searchByList(1L);
 		assertThat(games).isNotEmpty();
 		assertThat(games.size()).isGreaterThan(0);
@@ -30,42 +30,42 @@ public class GameRepositoryTests {
 	
 	@Test
 	@DisplayName("Should be empty")
-	void searchByListCase2() {
+	void searchByListNotFoundCase() {
 		List<GameMinProjection> games = gameRepository.searchByList(99L);
 		assertThat(games).isEmpty();
 	}
 	
 	@Test
 	@DisplayName("Should not be empty")
-	void searchByListSkippingCase1() {
+	void searchByListSkipping() {
 		List<GameMinProjection> games = gameRepository.searchByList(1L, 4);
 		assertThat(games).isNotEmpty();
 	}
 	
 	@Test
 	@DisplayName("Should be empty")
-	void searchByListSkippingCase2() {
+	void searchByListSkippingNotFoundCase() {
 		List<GameMinProjection> games = gameRepository.searchByList(99L, 5);
 		assertThat(games).isEmpty();
 	}
 	
     @Test
     @DisplayName("shouldr return game count for existing list")
-    void countByListCase1() {
+    void countByList() {
         int count = gameRepository.countByList(1L);
         assertThat(count).isGreaterThan(0);
     }
 
     @Test
     @DisplayName("should return zero when list does not exist")
-    void countByListCase2() {
+    void countByListCaseNotFoundCase() {
         int count = gameRepository.countByList(99L);
         assertThat(count).isEqualTo(0);
     }
 
     @Test
     @DisplayName("should return ten games when paged")
-    void findAllPagedCase1() {
+    void findAllPagedCase() {
         List<Game> games = gameRepository.findAllPaged(0);
         assertThat(games).hasSizeLessThanOrEqualTo(10);
         assertThat(games).isNotEmpty();
