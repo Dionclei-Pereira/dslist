@@ -13,20 +13,21 @@ This project implements a simple backend. The main objective is to create an API
 
 The main technologies used in this project are:
 
-- ✅ Java 21 
-- ✅ Spring Boot  
-- ✅ Hibernate  
-- ✅ H2 DataBase
-- ✅ Spring Security
-- ✅ JWT - HMAC
-- ✅ Cache - Caffeine
+- ☕ Java 21 
+- 🌱 Spring Boot  
+- 🛠️ Hibernate  
+- 🗄️ H2 DataBase
+- 🛡️ Spring Security
+- 🔐 JWT - HMAC
+- ⚡ Cache - Caffeine
+- 🧪 JUnit5 and Mockito
 
 ## 🎯 **Features**
-- ✅ Games  
-- ✅ Game Lists
-- ✅ Reorder games  
-- ✅ JWT Tokens
-- ✅ Paged result
+- 🎮 Games  
+- 📋 Game Lists
+- 🔄 Reorder games  
+- 🧾 JWT Tokens
+- 📄 Paged result
   
 ## ⚙ Prerequisites
 
