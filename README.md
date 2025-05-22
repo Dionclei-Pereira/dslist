@@ -53,7 +53,7 @@ cd dslist
 
 To run the project, you can use your IDE or Maven CLI:
 
-### 4. Testing the API
+### 3. Testing the API
 
 The API is configured to allow login and generate a JWT token. You can use **Postman** to test the routes.
 
