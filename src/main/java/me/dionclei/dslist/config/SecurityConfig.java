@@ -14,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 
 @Configuration
 @EnableWebSecurity
@@ -34,8 +36,11 @@ public class SecurityConfig {
     					.requestMatchers(HttpMethod.POST, "/lists").hasRole("ADMIN")
     					.requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
     					.requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-    					.anyRequest().authenticated())
+    					.anyRequest().permitAll())
     			.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
+    			.exceptionHandling(e -> e.authenticationEntryPoint((request, response, ex) -> {
+    				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+    			}))
     			.build();
     }
     
